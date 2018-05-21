@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+  <div class="loginBox" style="height: 460px;">
+            <h:form>
+                <p>Nom</p>
+                <p:inputText value="#{utilisateurController.selected.nom}" title="Nom" class="input"/> 
+                <p>Prénom</p>
+                <p:inputText value="#{utilisateurController.selected.prenom}" title="Prénom" class="input"/> 
+                <p>Nom d'utilisateur</p>
+                <p:inputText value="#{utilisateurController.selected.id}" title="Nom d'utilisateur" class="input"/> 
+                <p>Mot de passe </p>
+                <p:inputText value="#{utilisateurController.selected.password}" title="Mot de passe" class="input"/> 
+                <p>Confirmer mot de passe</p>
+                <p:inputText value="#{utilisateurController.selected.password}" title="Confirmer mot de passe" class="input"/> 
+                <br></br><br></br><br></br>
+                <h:commandButton action="#{utilisateurController.creerCompte()}" value="Confirmer"/>
+
+            </h:form>
+        </div>
+
+    </h:body>
+</html>
+
