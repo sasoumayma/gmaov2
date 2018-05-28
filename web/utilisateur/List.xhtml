@@ -71,9 +71,12 @@
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{utilisateurController.prepareCreate}" update=":UtilisateurCreateForm" oncomplete="PF('UtilisateurCreateDialog').show()"/>
+                            <p:commandButton id="exportButton" icon="ui-icon-pdf"   value="Export" action="#{utilisateurController.generatePdf()}" ajax="false"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":UtilisateurViewForm" oncomplete="PF('UtilisateurViewDialog').show()" disabled="#{empty utilisateurController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":UtilisateurEditForm" oncomplete="PF('UtilisateurEditDialog').show()" disabled="#{empty utilisateurController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{utilisateurController.destroy}" update=":growl,datalist" disabled="#{empty utilisateurController.selected}"/>
+                         <!--   <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="# {bundle.Delete}" actionListener="# {utilisateurController.deconnecte}" update=":growl,datalist" disabled="#{empty utilisateurController.selected}"/>
+                         -->
                         </f:facet>
                     </p:dataTable>
                 </p:panel>

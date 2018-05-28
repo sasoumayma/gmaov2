@@ -1,5 +1,6 @@
 package controller;
 
+import bean.Categorie;
 import bean.Entree;
 import controller.util.JsfUtil;
 import controller.util.JsfUtil.PersistAction;
@@ -58,7 +59,7 @@ public class EntreeController implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("EntreeCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            getItems().add(selected);    // Invalidate list of items to trigger re-query.
         }
     }
 
@@ -73,7 +74,8 @@ public class EntreeController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
-
+    
+   
     public List<Entree> getItems() {
         if (items == null) {
             items = getFacade().findAll();

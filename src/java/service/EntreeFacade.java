@@ -5,6 +5,7 @@
  */
 package service;
 
+import bean.Categorie;
 import bean.Entree;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,5 +29,4 @@ public class EntreeFacade extends AbstractFacade<Entree> {
     public EntreeFacade() {
         super(Entree.class);
     }
-    
 }

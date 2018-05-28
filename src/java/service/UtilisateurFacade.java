@@ -6,9 +6,15 @@
 package service;
 
 import bean.Utilisateur;
+import controler.util.PdfUtil;
+import controller.util.HashageUtil;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -28,32 +34,72 @@ public class UtilisateurFacade extends AbstractFacade<Utilisateur> {
     public UtilisateurFacade() {
         super(Utilisateur.class);
     }
+    //jasper
+    public void generatePdf() throws JRException, IOException{
+        Map<String,Object> params= new HashMap();
+        params.put("responsable", "OUMAYMA"); 
+        PdfUtil.generatePdf(findAll(), params, "utilisateur", "/jasper/utilisateur.jasper");
+                }
+    //jasper
     
-    public int creerCompte(Utilisateur utilisateur) {
-      
-            Utilisateur u = new Utilisateur();
-            u.setId(utilisateur.getId());
-            u.setNom(utilisateur.getNom());
-            u.setPrenom(utilisateur.getPrenom());
-            u.setPassword(utilisateur.getPassword());
-            u.setBlocked(utilisateur.getBlocked());
-            u.setType(utilisateur.getType());
-            u.setMdpChanged(true);
-            create(u);
-            return 1;
-            
-               }
+    
+   /*connecte Utilisateur*/
+    @Override
+    public void create(Utilisateur utilisateur) {
+        utilisateur.setPassword(HashageUtil.sha256(utilisateur.getPassword()));
+        super.create(utilisateur);
+    }
+
+    public int seConnnecter(Utilisateur utilisateur) {
+        if (utilisateur == null || utilisateur.getId() == null) {
+            return -5; // please type login
+        } else {
+            Utilisateur loadedUtilisateur = find(utilisateur.getId());
+            if (loadedUtilisateur == null) {
+                return -4; // makaynch had utilisateur
+            } else if (!loadedUtilisateur.getPassword().equals(HashageUtil.sha256(utilisateur.getPassword()))) {
+                if (loadedUtilisateur.getNbrCnx() < 3) {
+                    loadedUtilisateur.setNbrCnx(loadedUtilisateur.getNbrCnx() + 1);
+                } else if (loadedUtilisateur.getNbrCnx() >= 3) {
+                    loadedUtilisateur.setBlocked(1);
+                    // edit(loadedUtilisateur);
+                }
+                return -3; // Wrong Password
+            } else if (loadedUtilisateur.getBlocked() == 1) {
+                return -2; // this utilisateur is blocked
+            } else {
+                loadedUtilisateur.setNbrCnx(0);
+                edit(loadedUtilisateur);
+                utilisateur = clone(loadedUtilisateur);
+                utilisateur.setMdpChanged(loadedUtilisateur.isMdpChanged());
+                edit(utilisateur);
+                // SessionUtil.attachUtilisateurToCommune(utilisateur);
+                return 1; // this utilisateur is exist
+            }
+
+        }
+    }
+
+    public Utilisateur clone(Utilisateur utilisateur) {
+        Utilisateur clone = new Utilisateur();
+        clone.setId(utilisateur.getId());
+        clone.setBlocked(utilisateur.getBlocked());
+        clone.setMdpChanged(utilisateur.isMdpChanged());
+        clone.setNbrCnx(utilisateur.getNbrCnx());
+        clone.setPassword(utilisateur.getPassword());
+        return clone;
+    }
+
+    public void inscrir(Utilisateur selected) {
+        Utilisateur utilisateur = clone(selected);
+        utilisateur.setPassword(controller.util.HashageUtil.sha256(utilisateur.getPassword()));
+        create(utilisateur);
+    }
+    /* Connecte Utilisateur*/
     
 }
             
-//            c1.setAdresseComplement(utilisateur.getAdresseComplement());
-//            c1.setBlocked(false);
-//            c1.setEmail(utilisateur.getEmail());
-//            c1.setNom(utilisateur.getNom());
-//            c1.setPassword(utilisateur.getPassword());
-//            c1.setPhone(utilisateur.getPassword());
-//            c1.setPhone(utilisateur.getPhone());
-//            c1.setSecteur(utilisateur.getSecteur());
+
             
        
  

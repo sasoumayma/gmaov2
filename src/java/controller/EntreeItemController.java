@@ -27,7 +27,16 @@ public class EntreeItemController implements Serializable {
     private service.EntreeItemFacade ejbFacade;
     private List<EntreeItem> items = null;
     private EntreeItem selected;
-
+    
+    //update             
+    public String update(EntreeItem entreeItem){
+    selected = entreeItem;
+    return "/entreeItem/Update";
+    }
+     //update
+    
+    
+    
     public EntreeItemController() {
     }
 

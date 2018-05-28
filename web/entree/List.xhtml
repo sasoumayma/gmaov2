@@ -14,7 +14,7 @@
         </ui:define>
 
         <ui:define name="body">
-            <h:form id="EntreeListForm">
+           <h:form id="EntreeListForm">
                 <p:panel header="#{bundle.ListEntreeTitle}">
                     <p:dataTable id="datalist" value="#{entreeController.items}" var="item"
                                  selectionMode="single" selection="#{entreeController.selected}"
@@ -59,6 +59,7 @@
                             </f:facet>
                             <h:outputText value="#{item.founisseur}"/>
                         </p:column>
+                      
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{entreeController.prepareCreate}" update=":EntreeCreateForm" oncomplete="PF('EntreeCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":EntreeViewForm" oncomplete="PF('EntreeViewDialog').show()" disabled="#{empty entreeController.selected}"/>
@@ -68,6 +69,7 @@
                     </p:dataTable>
                 </p:panel>
             </h:form>
+
 
             <ui:include src="Create.xhtml"/>
             <ui:include src="Edit.xhtml"/>
